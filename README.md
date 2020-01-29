@@ -23,7 +23,7 @@ When you cannot place any more bricks and the bin region is saturated, the game 
 
 ## The Menu
 
-Press Escape to open the menu. The game will be saved automatically.
+Press Escape to open the menu. The game will be saved automatically. (This is also the case when closing Mosaik during a game.)
 
 In the menu, you can continue the saved game (if any), or start a new game with any desired board size and brickset. A brickset is the set of all brick shapes that will appear during the game.
 
