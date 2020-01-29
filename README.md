@@ -33,7 +33,12 @@ Use the Up/Down arrow keys to navigate the menu, and the Left/Right keys to chan
 
 All data is stored in the `data` directory. Place your own images in `data/images` to include them as backgrounds in the game.
 
-One day I might write a guide how to design your own bricksets.
+### How to design your own bricksets
+
+Bricksets are defined in `data/bricksets`. A brickset file contains the following commands:
+- `new b` - defines a new brick with the internal name `b`
+- `col b rrggbb` - sets the color of brick `b` to the given hex color value.
+- `add b x y` - defines that brick `b` covers the tile located `x` units east and `y` units south of its center
 
 ## Website
 
