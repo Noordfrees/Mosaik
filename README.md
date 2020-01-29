@@ -48,8 +48,8 @@ Bricksets are defined in `data/bricksets`. A brickset file contains the followin
 
 ## Credits
 
-Created by Benedikt Straub (@Noordfrees) in his spare time. I hope you like my work.
+Created by [Benedikt Straub (@Noordfrees)](https://github.com/Noordfrees) in his spare time. I hope you like my work.
 
 ## License
 
-GPL3. See the file `LICENSE` for details.
+GPL3. See the file [LICENSE](https://github.com/Noordfrees/Mosaik/blob/master/LICENSE) for details.
