@@ -499,7 +499,7 @@ public class Game {
 									input = input.substring(0, input.length() - 1);
 							}
 							else if (k.getKeyChar() != KeyEvent.CHAR_UNDEFINED &&
-									Character.isLetterOrDigit​(k.getKeyChar())) {
+									Character.isLetterOrDigit(k.getKeyChar())) {
 								input += k.getKeyChar();
 							}
 							if (create) {
