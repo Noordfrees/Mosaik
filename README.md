@@ -9,7 +9,7 @@ After compiling, you can start Mosaik from the base directory using `java Game`.
 
 ## The Game
 
-You are given a rectangular board of 15×19 tiles, and on the right hand side you can see some bricks in various shapes. Your aim is to place as many bricks on the board as you can.
+You are given a rectangular board of 15×10 tiles, and on the right hand side you can see some bricks in various shapes. Your aim is to place as many bricks on the board as you can.
 
 Click on a brick to pick it up. Now you have to place it, you may not put it back again. Use the mousewheel or Ctrl-Click to rotate the brick you're holding. Click to place it in a free location on the board. A new brick will appear on the right.
 
@@ -32,6 +32,8 @@ Use the Up/Down arrow keys to navigate the menu, and the Left/Right keys to chan
 ## Custom Data
 
 All data is stored in the `data` directory. Place your own images in `data/images` to include them as backgrounds in the game.
+
+One day I might write a guide how to design your own bricksets.
 
 ## Website
 
