@@ -1,6 +1,8 @@
 # Mosaik
 Casual game written in Java: Cleverly place various-shaped bricks to cover the board. Simple and compelling!
 
+![Mosaik](https://repository-images.githubusercontent.com/237076242/88ece700-42f1-11ea-813e-90d8ab9189b0)
+
 ## Getting Started
 
 No installation needed. Just clone or download the repository and run `javac Game.java` in the base directory. You need to have a Java Development Kit, version 8 or later, installed in order to use `javac`. I recommend OpenJDK.
