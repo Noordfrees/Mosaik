@@ -1,0 +1,222 @@
+new 1
+new 2
+
+new 3_str
+new 3_cur
+
+new 4_str
+new 4_block
+new 4:_|¯
+new 4:¯|_
+new 4_T
+new 4_L
+new 4_L_inv
+
+new 5_str
+new 5_L
+new 5_L_inv
+new 5_L_eq
+new 5_W
+new 5_b
+new 5_d
+new 5_T
+new 5:_|__
+new 5:__|_
+new 5:+
+new 5:__|¯
+new 5:¯|__
+new 5:-|¯
+new 5:-|_
+new 5_U
+new 5:¯|_
+new 5:_|¯
+
+col 1       4C802A
+col 2       802A4C
+
+col 3_str   522A80
+col 3_cur   2A6F80
+
+col 4_str   2A802A
+col 4_block ACBF60
+col 4:_|¯   BF60AC
+col 4:¯|_   6060BF
+col 4_T     BFAC60
+col 4_L     60ACBF
+col 4_L_inv 2A804C
+
+col 5_str   752A80
+col 5_L     806F2A
+col 5_L_inv 2A4C80
+col 5_U     60BF60
+col 5_T     802A6F
+col 5_W     60BF86
+col 5_L_eq  2A2A80
+col 5_b     BF6086
+col 5_d     804C2A
+col 5:+     86BF60
+col 5:_|__  8660BF
+col 5:__|_  60BFAC
+col 5:__|¯  BF8660
+col 5:¯|__  6F802A
+col 5:_|¯   AC60BF
+col 5:¯|_   6086BF
+col 5:-|_   2A806F
+col 5:-|¯   802A2A
+
+add 1 0 0
+
+add 2 0 0
+add 2 0 1
+
+add 3_str 0 0
+add 3_str 0 1
+add 3_str 0 -1
+
+add 3_cur 0 0
+add 3_cur 0 1
+add 3_cur 1 0
+
+add 4_str 0 0
+add 4_str 0 1
+add 4_str 0 2
+add 4_str 0 -1
+
+add 4_block 0 0
+add 4_block 0 1
+add 4_block 1 0
+add 4_block 1 1
+
+add 4:_|¯ 0 0
+add 4:_|¯ 1 0
+add 4:_|¯ 0 1
+add 4:_|¯ -1 1
+
+add 4:¯|_ 0 0
+add 4:¯|_ -1 0
+add 4:¯|_ 0 1
+add 4:¯|_ 1 1
+
+add 4_T 0 0
+add 4_T 1 0
+add 4_T -1 0
+add 4_T 0 1
+
+add 4_L 0 0
+add 4_L 0 -1
+add 4_L 0 -2
+add 4_L 1 0
+
+add 4_L_inv 0 0
+add 4_L_inv 0 1
+add 4_L_inv 0 2
+add 4_L_inv 1 0
+
+add 5_str 0 0
+add 5_str 1 0
+add 5_str 2 0
+add 5_str -1 0
+add 5_str -2 0
+
+add 5_L 0 0
+add 5_L 0 -1
+add 5_L 0 -2
+add 5_L 0 -3
+add 5_L 1 0
+
+add 5_L_inv 0 0
+add 5_L_inv 0 1
+add 5_L_inv 0 2
+add 5_L_inv 0 3
+add 5_L_inv 1 0
+
+add 5_U 0 0
+add 5_U 1 0
+add 5_U 1 1
+add 5_U -1 0
+add 5_U -1 1
+
+add 5_W 0 0
+add 5_W 0 -1
+add 5_W -1 -1
+add 5_W 1 0
+add 5_W 1 1
+
+add 5_T 0 0
+add 5_T 1 0
+add 5_T -1 0
+add 5_T 0 1
+add 5_T 0 2
+
+add 5_d 0 0
+add 5_d 0 1
+add 5_d -1 0
+add 5_d -1 1
+add 5_d 0 -1
+
+add 5_b 0 0
+add 5_b 0 1
+add 5_b 1 0
+add 5_b 1 1
+add 5_b 0 -1
+
+add 5_L_eq 0 0
+add 5_L_eq 1 0
+add 5_L_eq 2 0
+add 5_L_eq 0 1
+add 5_L_eq 0 2
+
+add 5:+ 0 0
+add 5:+ 1 0
+add 5:+ -1 0
+add 5:+ 0 1
+add 5:+ 0 -1
+
+add 5:_|__ 0 0
+add 5:_|__ 1 0
+add 5:_|__ 2 0
+add 5:_|__ -1 0
+add 5:_|__ 0 -1
+
+add 5:__|_ 0 0
+add 5:__|_ 1 0
+add 5:__|_ -1 0
+add 5:__|_ -2 0
+add 5:__|_ 0 -1
+
+add 5:__|¯ 0 0
+add 5:__|¯ -1 0
+add 5:__|¯ -2 0
+add 5:__|¯ 0 -1
+add 5:__|¯ 1 -1
+
+add 5:¯|__ 0 0
+add 5:¯|__ 1 0
+add 5:¯|__ 2 0
+add 5:¯|__ 0 -1
+add 5:¯|__ -1 -1
+
+add 5:-|¯ 0 0
+add 5:-|¯ -1 0
+add 5:-|¯ 0 1
+add 5:-|¯ 0 -1
+add 5:-|¯ 1 -1
+
+add 5:-|_ 0 0
+add 5:-|_ -1 0
+add 5:-|_ 0 1
+add 5:-|_ 0 -1
+add 5:-|_ 1 1
+
+add 5:¯|_ 0 0
+add 5:¯|_ 0 1
+add 5:¯|_ 0 -1
+add 5:¯|_ -1 -1
+add 5:¯|_ 1 1
+
+add 5:_|¯ 0 0
+add 5:_|¯ 0 1
+add 5:_|¯ 0 -1
+add 5:_|¯ 1 -1
+add 5:_|¯ -1 1
+

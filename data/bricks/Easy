@@ -1,0 +1,76 @@
+new 1
+new 2
+
+new 3_str
+new 3_cur
+
+new 4_str
+new 4_block
+new 4:_|¯
+new 4:¯|_
+new 4_T
+new 4_L
+new 4_L_inv
+
+col 1       1F7F1F
+col 2       7FfF7F
+
+col 3_str   7FfFfF
+col 3_cur   7F7FfF
+
+col 4_str   FFfF7F
+col 4_block FF7F7F
+col 4:_|¯   FF7FfF
+col 4:¯|_   1F1F7F
+col 4_T     7F1F1F
+col 4_L     7F1F7F
+col 4_L_inv 7F7F1F
+
+add 1 0 0
+
+add 2 0 0
+add 2 0 1
+
+add 3_str 0 0
+add 3_str 0 1
+add 3_str 0 -1
+
+add 3_cur 0 0
+add 3_cur 0 1
+add 3_cur 1 0
+
+add 4_str 0 0
+add 4_str 0 1
+add 4_str 0 2
+add 4_str 0 -1
+
+add 4_block 0 0
+add 4_block 0 1
+add 4_block 1 0
+add 4_block 1 1
+
+add 4:_|¯ 0 0
+add 4:_|¯ 1 0
+add 4:_|¯ 0 1
+add 4:_|¯ -1 1
+
+add 4:¯|_ 0 0
+add 4:¯|_ -1 0
+add 4:¯|_ 0 1
+add 4:¯|_ 1 1
+
+add 4_T 0 0
+add 4_T 1 0
+add 4_T -1 0
+add 4_T 0 1
+
+add 4_L 0 0
+add 4_L 0 -1
+add 4_L 0 -2
+add 4_L 1 0
+
+add 4_L_inv 0 0
+add 4_L_inv 0 1
+add 4_L_inv 0 2
+add 4_L_inv 1 0
+
