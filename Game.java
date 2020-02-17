@@ -41,13 +41,15 @@ public class Game {
 	}
 	
 	private abstract class Message {
-		public Message(String header, String body, boolean save) {
+		public Message(String header, String body, boolean save, boolean fs) {
 			title = header;
 			text = body;
 			allowSaving = save;
+			fullscreen = fs;
 		}
 		public final boolean allowSaving;
 		public final String title;
+		public final boolean fullscreen;
 		protected String text;
 		public String text() {
 			return text;
@@ -387,23 +389,33 @@ public class Game {
 					size * (occupied.length - 1), size * (occupied[0].length - 1)));
 		}
 		else if (message != null) {
-			Rectangle msgRect = new Rectangle(rect.x + size / 2, rect.y + size / 2,
-					size * (occupied.length - 1), size * (occupied[0].length - 1));
-			g.setColor(new Color(0x7F000000, true));
-			g.fill(msgRect);
-			g.setColor(Color.WHITE);
-			g.draw(msgRect);
-			g.setFont(new Font(Font.SERIF, Font.BOLD, size / 2));
-			b = g.getFont().getStringBounds(message.title, g.getFontRenderContext()).getBounds();
-			g.drawString(message.title, msgRect.x + msgRect.width / 2 - b.width / 2, msgRect.y + size);
-			String[] strs = message.text().split("\n");
-			int spacing = Math.min(size, size * (occupied[0].length - 2) / (strs.length + 2));
-			g.setFont(new Font(Font.SERIF, Font.PLAIN, size / 3));
-			int i = 0;
-			for (String s : strs) {
-				b = g.getFont().getStringBounds(s, g.getFontRenderContext()).getBounds();
-				g.drawString(s, msgRect.x + msgRect.width / 2 - b.width / 2, msgRect.y + size * 2 + spacing * i);
-				i++;
+			if (message.fullscreen) {
+				Rectangle msgRect = new Rectangle(rect.x + size / 2, rect.y + size / 2,
+						size * (occupied.length - 1), size * (occupied[0].length - 1));
+				g.setColor(new Color(0x7F000000, true));
+				g.fill(msgRect);
+				g.setColor(Color.WHITE);
+				g.draw(msgRect);
+				g.setFont(new Font(Font.SERIF, Font.BOLD, size / 2));
+				b = g.getFont().getStringBounds(message.title, g.getFontRenderContext()).getBounds();
+				g.drawString(message.title, msgRect.x + msgRect.width / 2 - b.width / 2, msgRect.y + size);
+				String[] strs = message.text().split("\n");
+				int spacing = Math.min(size, size * (occupied[0].length - 2) / (strs.length + 2));
+				g.setFont(new Font(Font.SERIF, Font.PLAIN, size / 3));
+				int i = 0;
+				for (String s : strs) {
+					b = g.getFont().getStringBounds(s, g.getFontRenderContext()).getBounds();
+					g.drawString(s, msgRect.x + msgRect.width / 2 - b.width / 2, msgRect.y + size * 2 + spacing * i);
+					i++;
+				}
+			} else {
+				g.setColor(Color.WHITE);
+				g.setFont(new Font(Font.SERIF, Font.BOLD, size / 2));
+				b = g.getFont().getStringBounds(message.title, g.getFontRenderContext()).getBounds();
+				g.drawString(message.title, rect.x + rect.width / 2 - b.width / 2, rect.y / 2 + b.height / 2);
+				g.setFont(new Font(Font.SERIF, Font.PLAIN, size / 3));
+				b = g.getFont().getStringBounds(message.text(), g.getFontRenderContext()).getBounds();
+				g.drawString(message.text(), rect.x + rect.width / 2 - b.width / 2, h - rect.y / 2 + b.height / 2);
 			}
 		}
 		
@@ -448,7 +460,7 @@ public class Game {
 		if (highscorePlace < 0) {
 			message = new Message("Game Over", "The game is over.\nYou gained " + points + 
 					" points.\nYou have not earned a highscore entry.\n\n" + scores +
-					"\n\nPress any key or click to start a new game", false) {
+					"\n\nPress any key or click to start a new game", false, true) {
 				public void function(InputEvent e) {
 					int mask = InputEvent.BUTTON1_DOWN_MASK | InputEvent.BUTTON2_DOWN_MASK | InputEvent.BUTTON3_DOWN_MASK;
 					if ((e.getModifiersEx() | mask) != mask)
@@ -465,7 +477,7 @@ public class Game {
 					" points.\nYou have earned the " + (highscorePlace + 1) +
 					(highscorePlace == 0 ? "st" : highscorePlace == 1 ? "nd" : highscorePlace == 2 ? "rd" : "th") +
 					" place in the highscore list!\nCongratulations!\n\n" + scores +
-					"\n\nPlease enter your name, then press enter", false) {
+					"\n\nPlease enter your name, then press enter", false, true) {
 				private String input = "";
 				public void function(InputEvent e) {
 					if (input != null) {
@@ -547,7 +559,7 @@ public class Game {
 				break;
 		}
 		if (complete) {
-			message = new Message("Congratulations", "Press any key or click to continue", true) {
+			message = new Message("Congratulations", "Press any key or click to continue…", true, false) {
 				public void function(InputEvent e) {
 					int mask = InputEvent.BUTTON1_DOWN_MASK | InputEvent.BUTTON2_DOWN_MASK | InputEvent.BUTTON3_DOWN_MASK;
 					if ((e.getModifiersEx() | mask) != mask)
