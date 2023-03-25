@@ -9,12 +9,12 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Game {
-	
+
 	public static final String DEFAULT_BRICKSET = "Default";
-	
+
 	private final JFrame frame;
 	private final JLabel display;
-	
+
 	private String currentImageName, lastImageName;
 	private BufferedImage image;
 	private boolean[][] occupied;
@@ -23,13 +23,13 @@ public class Game {
 	private Brick[] waiting;
 	private int highlightBrick, selectedBrick;
 	private Point mousePos;
-	
+
 	private Shape[] waitingRects;
 	private Rectangle trashRect;
-	
+
 	private BrickSet brickset;
 	private Menu menu;
-	
+
 	private static final Highscore[] highscores = new Highscore[10];
 	public static class Highscore {
 		public final String name;
@@ -39,7 +39,7 @@ public class Game {
 			points = p;
 		}
 	}
-	
+
 	private abstract class Message {
 		public Message(String header, String body, boolean save, boolean fs) {
 			title = header;
@@ -57,7 +57,7 @@ public class Game {
 		public abstract void function(InputEvent e);
 	}
 	private Message message;
-	
+
 	public static class BrickSet {
 		public BrickDescription random() {
 			return descrs[(int)(descrs.length * Math.random())];
@@ -88,7 +88,7 @@ public class Game {
 			try {
 				java.util.List<String> lines = Files.readAllLines(f.toPath());
 				/* Syntax for brickset files:
-				 * 
+				 *
 				 * Each line starts with a command and the name of a brick.
 				 * Next is the action to perform on the brick:
 				 *   · new <name>         – create brick with given name
@@ -210,12 +210,12 @@ public class Game {
 			return descr.occupies(rotation);
 		}
 	}
-	
+
 	public int tilesize() {
 		int w = display.getWidth();
 		int h = display.getHeight();
 		return Math.min(w * 2 / (3 * occupied.length), h / occupied[0].length);
-	}	
+	}
 	public Rectangle rect() {
 		int w = display.getWidth();
 		int h = display.getHeight();
@@ -257,16 +257,16 @@ public class Game {
 			return def;
 		}
 	}
-	
+
 	public synchronized void draw() {
-		
+
 		int w = display.getWidth();
 		int h = display.getHeight();
 		int whm = Math.max(w, h);
-		
+
 		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = img.createGraphics();
-		
+
 		for (int i = 0; i < whm * 2; i++) {
 			int c = 255 * i / (whm * 2);
 			g.setColor(new Color(c, c, c));
@@ -275,7 +275,7 @@ public class Game {
 			else
 				g.drawLine(i * w / h, 0, 0, i);
 		}
-		
+
 		int size = tilesize();
 		Rectangle rect = rect();
 		{
@@ -295,14 +295,14 @@ public class Game {
 			g.setClip(null);
 		}
 		for (int i = 0; i < occupied.length; i++)
-			for (int j = 0; j < occupied[i].length; j++) 
+			for (int j = 0; j < occupied[i].length; j++)
 				if (occupied[i][j]) {
 					g.setColor(new Color(0xCCCCCC));
 					g.fillRect(rect.x + i * size, rect.y + j * size, size, size);
-					g.setColor(new Color(0xAAAAAA));
+					g.setColor(new Color(255 - g.getColor().getRed(), 255 - g.getColor().getGreen(), 255 - g.getColor().getBlue()));
 					g.drawRect(rect.x + i * size + 1, rect.y + j * size + 1, size - 3, size - 3);
 				}
-		
+
 		int compH = h / (waiting.length + 2);
 		g.setColor(new Color(0x1F000000, true));
 		g.fillRect(w * 2 / 3, 0, w / 3, h);
@@ -383,12 +383,12 @@ public class Game {
 			else
 				waitingRects[i] = null;
 		}
-		
+
 		if (menu != null) {
 			menu.draw(g, new Rectangle(rect.x + size / 2, rect.y + size / 2,
 					size * (occupied.length - 1), size * (occupied[0].length - 1)));
 		}
-		else if (message != null) {
+		if (message != null) {
 			if (message.fullscreen) {
 				Rectangle msgRect = new Rectangle(rect.x + size / 2, rect.y + size / 2,
 						size * (occupied.length - 1), size * (occupied[0].length - 1));
@@ -418,11 +418,24 @@ public class Game {
 				g.drawString(message.text(), rect.x + rect.width / 2 - b.width / 2, h - rect.y / 2 + b.height / 2);
 			}
 		}
-		
+
 		display.setIcon(new ImageIcon(img));
-		
+
 	}
-	
+
+	public String highscoreString() {
+		return highscoreString(null, -1, -1);
+	}
+	public String highscoreString(String name, int highscorePlace, long points) {
+		String scores = "~~~~ Highscores ~~~~";
+		for (int i = 0; i < highscores.length; i++) {
+			int j = highscorePlace < 0 ? i : i > highscorePlace ? i - 1 : i;
+			scores += "\n" + (i + 1) + ") " + (i == highscorePlace ? (name + "_") : highscores[j].name) + ": " +
+					(i == highscorePlace ? points : highscores[j].points);
+		}
+		return scores;
+	}
+
 	public void checkGameOver() {
 		if (trash > 0)
 			return;
@@ -451,15 +464,9 @@ public class Game {
 				break;
 		}
 		final int highscorePlace = hp;
-		String scores = "~~~~ Highscores ~~~~";
-		for (int i = 0; i < highscores.length; i++) {
-			int j = highscorePlace < 0 ? i : i > highscorePlace ? i - 1 : i;
-			scores += "\n" + (i + 1) + ") " + (i == highscorePlace ? "_" : highscores[j].name) + ": " +
-					(i == highscorePlace ? points : highscores[j].points);
-		}
 		if (highscorePlace < 0) {
-			message = new Message("Game Over", "The game is over.\nYou gained " + points + 
-					" points.\nYou have not earned a highscore entry.\n\n" + scores +
+			message = new Message("Game Over", "The game is over.\nYou gained " + points +
+					" points.\nYou have not earned a highscore entry.\n\n" + highscoreString("", highscorePlace, points) +
 					"\n\nPress any key or click to start a new game", false, true) {
 				public void function(InputEvent e) {
 					int mask = InputEvent.BUTTON1_DOWN_MASK | InputEvent.BUTTON2_DOWN_MASK | InputEvent.BUTTON3_DOWN_MASK;
@@ -473,18 +480,16 @@ public class Game {
 			};
 		}
 		else {
-			message = new Message("Game Over", "The game is over.\nYou gained " + points + 
+			message = new Message("Game Over", "The game is over.\nYou gained " + points +
 					" points.\nYou have earned the " + (highscorePlace + 1) +
 					(highscorePlace == 0 ? "st" : highscorePlace == 1 ? "nd" : highscorePlace == 2 ? "rd" : "th") +
-					" place in the highscore list!\nCongratulations!\n\n" + scores +
+					" place in the highscore list!\nCongratulations!\n\n" + highscoreString("", highscorePlace, points) +
 					"\n\nPlease enter your name, then press enter", false, true) {
 				private String input = "";
 				public void function(InputEvent e) {
 					if (input != null) {
 						if (e instanceof KeyEvent) {
 							KeyEvent k = (KeyEvent)e;
-							String scores = "~~~~ Highscores ~~~~";
-							boolean create = true;
 							if (k.getKeyCode() == KeyEvent.VK_ENTER) {
 								try {
 									PrintWriter write = new PrintWriter(new File("data/highscores"));
@@ -501,10 +506,7 @@ public class Game {
 								catch (Exception ex) {
 									System.out.println("Unable to save game highscores: " + ex);
 								}
-								for (int i = 0; i < highscores.length; i++)
-									scores += "\n" + (i + 1) + ") " + highscores[i].name + ": " + highscores[i].points;
 								input = null;
-								create = false;
 							}
 							else if (k.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 								if (!input.isEmpty())
@@ -514,19 +516,12 @@ public class Game {
 									Character.isLetterOrDigit(k.getKeyChar())) {
 								input += k.getKeyChar();
 							}
-							if (create) {
-								for (int i = 0; i < highscores.length; i++) {
-									int j = highscorePlace < 0 ? i : i > highscorePlace ? i - 1 : i;
-									scores += "\n" + (i + 1) + ") " +
-											(i == highscorePlace ? input + "_" : highscores[j].name) + ": " +
-											(i == highscorePlace ? points : highscores[j].points);
-								}
-							}
-							text = "The game is over.\nYou gained " + points + 
+							text = "The game is over.\nYou gained " + points +
 									" points.\nYou have earned the " + (highscorePlace + 1) +
 									(highscorePlace == 0 ? "st" : highscorePlace == 1 ? "nd" : highscorePlace == 2 ?
-									"rd" : "th") + " place in the highscore list!\nCongratulations!\n\n" + scores +
-									"\n\n" + (input == null ? "Press any key or click to start a new game" :
+									"rd" : "th") + " place in the highscore list!\nCongratulations!\n\n" +
+									highscoreString(input, input == null ? -1 : highscorePlace, points) + "\n\n" +
+									(input == null ? "Press any key or click to start a new game" :
 											"Please enter your name, then press enter");
 						}
 					}
@@ -545,7 +540,7 @@ public class Game {
 		}
 		draw();
 	}
-	
+
 	public void checkComplete() {
 		boolean complete = true;
 		for (boolean[] bb : occupied) {
@@ -574,7 +569,7 @@ public class Game {
 			checkGameOver();
 		}
 	}
-	
+
 	public void save() {
 		try {
 			PrintWriter write = new PrintWriter(new File("data/save"));
@@ -597,7 +592,7 @@ public class Game {
 			System.out.println("Unable to save game because: " + e);
 		}
 	}
-	
+
 	public boolean load() {
 		File f = new File("data/save");
 		if (!f.isFile())
@@ -641,13 +636,13 @@ public class Game {
 		menu = null;
 		return true;
 	}
-	
-	
+
+
 	public void reset(boolean newGame) {
-		reset(newGame, occupied == null ? 15 : occupied.length, occupied == null ? 10 : occupied[0].length, 
+		reset(newGame, occupied == null ? 15 : occupied.length, occupied == null ? 10 : occupied[0].length,
 				5, waiting == null ? 5 : waiting.length, DEFAULT_BRICKSET);
 	}
-	
+
 	public void reset(boolean newGame, int w, int h, int tr, int wait, String bs) {
 		menu = null;
 		message = null;
@@ -701,21 +696,21 @@ public class Game {
 		highlightBrick = -1;
 		selectedBrick = -1;
 	}
-	
+
 	public Game() {
-		
+
 		frame = new JFrame("Mosaik");
 		display = new JLabel();
-		
+
 		currentImageName = "";
 		lastImageName = "";
 		if (!load()) {
 			reset(true);
 			menu = new Menu(15, 10, DEFAULT_BRICKSET);
 		}
-		
+
 		display.setPreferredSize(new Dimension(800, 600));
-		
+
 		frame.add(display);
 		display.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -842,19 +837,20 @@ public class Game {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
+
 	}
-	
+
 	public class Menu {
 		private int width, height;
 		private int selection;
 		private int brickset;
 		private final boolean load;
 		private final String[] bricksets;
-		
+		private final String[] highscoreString;
+
 		private Rectangle loadRect, startRect, quitRect, bricksetRect, bricksetLeftRect, bricksetRightRect,
 				widthRect, heightRect, widthLeftRect, widthRightRect, heightLeftRect, heightRightRect;
-		
+
 		public static final int MIN_WIDTH = 5;
 		public static final int MIN_HEIGHT = 5;
 		/* Layout:
@@ -878,6 +874,7 @@ public class Game {
 					break;
 				}
 			}
+			highscoreString = highscoreString().split("\n");
 		}
 		public boolean handleMouse(MouseEvent m) {
 			boolean click = m.getClickCount() > 0;
@@ -927,7 +924,7 @@ public class Game {
 			else if (heightRect != null && heightRect.contains(m.getPoint())) {
 				selection = load ? 3 : 2;
 			}
-			return sel != selection;
+			return sel != selection || click;
 		}
 		public void handleKey(KeyEvent e) {
 			switch (e.getKeyCode()) {
@@ -1014,11 +1011,14 @@ public class Game {
 		public void draw(Graphics2D g, Rectangle rect) {
 			loadRect = startRect = quitRect = bricksetRect = bricksetLeftRect = bricksetRightRect = widthRect =
 					heightRect = widthLeftRect = widthRightRect = heightLeftRect = heightRightRect = null;
-			
+
 			g.setColor(new Color(0x7F000000, true));
 			g.fill(rect);
 			g.setColor(Color.WHITE);
 			g.draw(rect);
+
+			rect.width /= 2;
+
 			final int size = tilesize();
 			g.setFont(new Font(Font.SERIF, Font.BOLD, size / 2));
 			String str = "New Game";
@@ -1063,9 +1063,24 @@ public class Game {
 			bricksetLeftRect = new Rectangle(bricksetRect.x, bricksetRect.y, bricksetRect.width / 3, bricksetRect.height);
 			bricksetRightRect = new Rectangle(bricksetRect.x + bricksetRect.width * 2 / 3,
 					bricksetRect.y, bricksetRect.width / 3, bricksetRect.height);
+
+			rect.x += rect.width;
+			int spacing = Math.min(size, size * (occupied[0].length - 2) / (highscoreString.length + 2));
+			g.setFont(new Font(Font.SERIF, Font.BOLD, size / 2));
+			b = g.getFont().getStringBounds(highscoreString[0], g.getFontRenderContext()).getBounds();
+			g.drawString(highscoreString[0], rect.x + rect.width / 2 - b.width / 2, rect.y + size);
+			int i = 0;
+			g.setFont(new Font(Font.SERIF, Font.PLAIN, size / 3));
+			for (String s : highscoreString) {
+				if (i > 0) {
+					b = g.getFont().getStringBounds(s, g.getFontRenderContext()).getBounds();
+					g.drawString(s, rect.x + rect.width / 2 - b.width / 2, rect.y + size * 2 + spacing * i);
+				}
+				i++;
+			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		java.util.List<String> lines;
 		try {
@@ -1090,5 +1105,5 @@ public class Game {
 		}
 		new Game();
 	}
-	
+
 }
