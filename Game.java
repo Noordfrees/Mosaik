@@ -259,6 +259,7 @@ public class Game {
 	}
 
 	public synchronized void draw() {
+		if (frame == null) return;
 
 		int w = display.getWidth();
 		int h = display.getHeight();
@@ -634,6 +635,7 @@ public class Game {
 		}
 		f.delete();
 		menu = null;
+		checkComplete();
 		return true;
 	}
 
@@ -698,16 +700,15 @@ public class Game {
 	}
 
 	public Game() {
-
-		frame = new JFrame("Mosaik");
-		display = new JLabel();
-
 		currentImageName = "";
 		lastImageName = "";
 		if (!load()) {
 			reset(true);
 			menu = new Menu(15, 10, DEFAULT_BRICKSET);
 		}
+
+		frame = new JFrame("Mosaik");
+		display = new JLabel();
 
 		display.setPreferredSize(new Dimension(800, 600));
 
